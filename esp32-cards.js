@@ -118,8 +118,8 @@ class Esp32OtaCard extends HTMLElement {
           <label class="ota-label" for="token">GitHub token (необязательно)</label>
           <input id="token" class="ota-input" type="password" autocomplete="new-password" placeholder="Пустое поле — использовать сохранённый токен">
           <div class="ota-actions">
-            <button type="button" class="ota-save" id="save">Сохранить токен</button>
             <button type="button" class="ota-update" id="update" ${devices.length ? "" : "disabled"}>Начать обновление</button>
+            <button type="button" class="ota-save" id="save">Сохранить токен</button>
           </div>
           <div id="action-status" class="ota-message">${devices.length ? "Готово к отправке OTA-команды." : "Ожидание обнаружения ESP32 по MQTT…"}</div>
         </div>
