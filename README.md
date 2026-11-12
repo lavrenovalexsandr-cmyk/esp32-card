@@ -1,27 +1,57 @@
 # ESP32 Lovelace Cards
 
-Two independent Lovelace cards for controlling ESP32 devices through the `esp32_ota` Home Assistant integration.
+**Набор пользовательских Lovelace-карточек для управления ESP32-устройствами через интеграцию Home Assistant.**
 
-## Included cards
+Репозиторий содержит две независимые карточки. Их можно использовать по отдельности или вместе на одной панели Home Assistant.
 
-- **ESP32 OTA Manager** (`esp32-ota-card`) — select an ESP32, start firmware OTA from a URL, optionally provide a GitHub token, and monitor update status.
-- **ESP32 Device Control** (`esp32-device-control-card`) — send restart and factory-reset commands to a selected ESP32. Factory reset requires two confirmations.
+## Содержание
 
-## Requirements
+- [Возможности](#возможности)
+- [Требования](#требования)
+- [Установка](#установка)
+- [Настройка карточек](#настройка-карточек)
+- [Взаимодействие с интеграцией](#взаимодействие-с-интеграцией)
+- [Структура репозитория](#структура-репозитория)
+- [Связанные проекты](#связанные-проекты)
 
-- Home Assistant with the `esp32_ota` integration installed and configured.
-- ESP32 firmware publishing device information and OTA status over the MQTT protocol expected by the integration.
-- The integration must expose the `esp32_ota.update`, `esp32_ota.restart`, and `esp32_ota.factory_reset` services as applicable.
+## Возможности
 
-Integration repository: https://github.com/lavrenovalexsandr-cmyk/esp32-mqtt-ha-integration
+### ESP32 OTA Manager
 
-## Installation
+Тип карточки: `custom:esp32-ota-card`
 
-### Manual
+- Выбор ESP32-устройства.
+- Запуск OTA-обновления прошивки по URL.
+- Возможность передать GitHub token для доступа к закрытым релизам.
+- Отображение текущего статуса обновления.
 
-1. Download `esp32-cards.js` from this repository.
-2. Copy it to `<HA config>/www/esp32-cards.js`.
-3. Add this Lovelace resource (Settings → Dashboards → Resources):
+Карточка не загружает прошивку самостоятельно: она передаёт команду интеграции Home Assistant, а интеграция отправляет её устройству через MQTT.
+
+### ESP32 Device Control
+
+Тип карточки: `custom:esp32-device-control-card`
+
+- Выбор ESP32-устройства.
+- Удалённый перезапуск устройства.
+- Запуск Factory Reset.
+- Двойное подтверждение Factory Reset для защиты от случайного сброса.
+
+## Требования
+
+- Установленная и настроенная интеграция `esp32_ota` для Home Assistant.
+- Прошивка ESP32 должна публиковать информацию об устройстве и статусы OTA по MQTT в соответствии с протоколом интеграции.
+- Для доступных действий интеграция должна предоставлять соответствующие сервисы:
+  - `esp32_ota.update`
+  - `esp32_ota.restart`
+  - `esp32_ota.factory_reset`
+
+## Установка
+
+### Ручная установка
+
+1. Скачайте файл `esp32-cards.js` из этого репозитория.
+2. Скопируйте его в каталог `www` конфигурации Home Assistant: `<HA config>/www/esp32-cards.js`.
+3. Добавьте ресурс Lovelace через **Настройки → Панели управления → Ресурсы**:
 
 ```yaml
 resources:
@@ -29,40 +59,66 @@ resources:
     type: module
 ```
 
-Both custom card types are registered by this one JavaScript resource.
+Один JavaScript-файл регистрирует обе карточки. Добавлять отдельные ресурсы для каждой карточки не требуется.
 
-### Card configuration
+### Установка через HACS
 
-OTA card:
+Репозиторий подготовлен для установки как frontend-репозиторий HACS. При добавлении вручную укажите этот репозиторий как пользовательский репозиторий с категорией **Dashboard**. После установки проверьте, что ресурс `esp32-cards.js` добавлен в Lovelace.
+
+## Настройка карточек
+
+Карточки добавляются на панель Lovelace через YAML-режим или редактор конфигурации карточек.
+
+### OTA Manager
 
 ```yaml
 type: custom:esp32-ota-card
-title: ESP32 firmware updates
+title: Обновление прошивки ESP32
 ```
 
-Device control card:
+### Device Control
 
 ```yaml
 type: custom:esp32-device-control-card
 title: Управление ESP32
 ```
 
-The cards are independent. Add either or both to any Lovelace dashboard.
+Карточки независимы: можно добавить только OTA Manager, только Device Control или обе карточки.
 
-## OTA service contract
+## Взаимодействие с интеграцией
 
-The OTA card calls:
+### OTA-обновление
 
-- Service: `esp32_ota.update`
-- Data: `device_id`, `url`, and optional `token`
+Карточка вызывает сервис:
 
-The integration converts this into the MQTT OTA command. The card does not calculate or request a firmware SHA-256 checksum.
+- **Сервис:** `esp32_ota.update`
+- **Параметры:** `device_id`, `url`, необязательный `token`
 
-The device control card calls `esp32_ota.restart` and `esp32_ota.factory_reset`, passing the selected `device_id`.
+Интеграция преобразует вызов сервиса в MQTT-команду для выбранного устройства. Карточка не вычисляет и не запрашивает SHA-256 контрольную сумму прошивки.
 
-## Development
+### Управление устройством
 
-The distributable `esp32-cards.js` contains both custom elements. The original card sources are kept separately in `src/`:
+Для управления карточка вызывает:
 
-- `src/esp32-ota-card.js`
-- `src/esp32-device-control-card.js`
+- `esp32_ota.restart` — перезапуск устройства;
+- `esp32_ota.factory_reset` — сброс устройства к заводским настройкам.
+
+В оба сервиса передаётся идентификатор выбранного устройства `device_id`.
+
+## Структура репозитория
+
+- `esp32-cards.js` — готовый файл для установки в Home Assistant; содержит обе карточки.
+- `src/esp32-ota-card.js` — исходный код OTA-карточки.
+- `src/esp32-device-control-card.js` — исходный код карточки управления устройством.
+- `hacs.json` — метаданные для HACS.
+
+При изменении исходников необходимо обновить общий файл `esp32-cards.js`, который используется при установке.
+
+## Связанные проекты
+
+- [ESP32 MQTT Home Assistant Integration](https://github.com/lavrenovalexsandr-cmyk/esp32-mqtt-ha-integration) — интеграция Home Assistant, предоставляющая сервисы и MQTT-взаимодействие с устройствами.
+- [ESP32 Platform Core](https://github.com/lavrenovalexsandr-cmyk/esp32-platform-core) — общая платформенная библиотека для прошивок ESP32.
+
+## Язык документации
+
+Основная документация ведётся на русском языке в `README.md`. Английская версия находится в [README_EN.md](README_EN.md).
