@@ -19,6 +19,7 @@ class Esp32OtaCard extends HTMLElement {
         name: state.attributes.device_name ||
           state.attributes.friendly_name || state.attributes.device_id,
         status: String(state.state || "unknown"),
+        available: state.attributes.device_available === true,
         progress: state.attributes.progress,
         message: state.attributes.message || ""
       }));
@@ -27,6 +28,7 @@ class Esp32OtaCard extends HTMLElement {
   getStatus(status) {
     const states = {
       online: {label: "На связи", icon: "mdi:check-circle", color: "success", detail: "Устройство подключено к MQTT."},
+      offline: {label: "Не в сети", icon: "mdi:lan-disconnect", color: "error", detail: "Нет MQTT-соединения с устройством."},
       downloading: {label: "Загрузка прошивки", icon: "mdi:download", color: "active", detail: "Получение файла прошивки по HTTPS."},
       verifying: {label: "Подготовка образа", icon: "mdi:package-check", color: "active", detail: "Подготовка образа прошивки к установке."},
       installing: {label: "Проверка образа", icon: "mdi:package-check", color: "active", detail: "Проверка совместимости образа ESP-IDF."},
@@ -56,7 +58,7 @@ class Esp32OtaCard extends HTMLElement {
       if (input) previous[id] = input.value;
     }
 
-    const status = device ? this.getStatus(device.status) : {
+    const status = device ? this.getStatus(device.available ? device.status : "offline") : {
       label: "Устройство не обнаружено",
       icon: "mdi:lan-disconnect",
       color: "neutral",
