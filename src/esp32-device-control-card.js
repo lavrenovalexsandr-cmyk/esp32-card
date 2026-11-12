@@ -7,6 +7,32 @@ class Esp32DeviceControlCard extends HTMLElement {
   set hass(hass) {
     this._hass = hass;
     this.render();
+    if (!this._deviceNamesPromise && (!this._deviceNamesUpdatedAt || Date.now() - this._deviceNamesUpdatedAt > 30000)) {
+      this.loadDeviceNames();
+    }
+  }
+
+  async loadDeviceNames() {
+    this._deviceNamesPromise = (async () => {
+      try {
+        const devices = await this._hass.connection.sendMessagePromise({ type: "config/device_registry/list" });
+        this._deviceNames = new Map();
+        devices.forEach(device => {
+          const identifier = (device.identifiers || []).find(([domain]) => domain === "esp32_ota");
+          if (identifier) {
+            const name = device.name_by_user || device.name;
+            if (name) this._deviceNames.set(String(identifier[1]).toUpperCase(), name);
+          }
+        });
+      } catch (error) {
+        console.warn("ESP32 card: unable to load Home Assistant device names", error);
+      } finally {
+        this._deviceNamesUpdatedAt = Date.now();
+        this._deviceNamesPromise = null;
+        this.render();
+      }
+    })();
+    return this._deviceNamesPromise;
   }
 
   getDevices() {
@@ -17,7 +43,8 @@ class Esp32DeviceControlCard extends HTMLElement {
       if (state.entity_id.startsWith("sensor.") && id) {
         found.set(String(id).toUpperCase(), {
           id: String(id).toUpperCase(),
-          name: state.attributes.device_name || state.attributes.friendly_name || "ESP32"
+          name: (this._deviceNames && this._deviceNames.get(String(id).toUpperCase())) ||
+            state.attributes.device_name || state.attributes.friendly_name || "ESP32"
         });
       }
     });
