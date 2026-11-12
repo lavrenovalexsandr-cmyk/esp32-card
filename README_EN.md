@@ -63,7 +63,36 @@ A single JavaScript file registers both cards. You do not need to add a separate
 
 ### Installation through HACS
 
-This repository is prepared to be installed as a HACS frontend repository. To add it manually, add this repository as a custom repository and select the **Dashboard** category. After installation, make sure the `esp32-cards.js` resource is added to Lovelace.
+1. Open **HACS** in Home Assistant.
+2. Open the three-dot menu in the upper-right corner and select **Custom repositories**.
+3. Enter the repository URL:
+   `https://github.com/lavrenovalexsandr-cmyk/esp32-card`
+4. Select **Dashboard** as the category.
+5. Click **Add**.
+6. Return to **HACS → Dashboard**. Find and open **ESP32 Lovelace Cards**.
+7. Click **Download** and wait for the installation to finish.
+8. Restart Home Assistant. Then perform a hard refresh in your browser (for example, `Ctrl + F5`).
+
+**Note:** if HACS reports that the repository already exists in the store (`Repository ... exists in the store`), do not add it again. Go to **HACS → Dashboard** and find **ESP32 Lovelace Cards** there.
+
+HACS should register the card resource automatically. If the custom cards do not appear, open **Settings → Dashboards → Resources** and check that the following resource is present:
+
+```yaml
+url: /hacsfiles/esp32-card/esp32-cards.js
+type: module
+```
+
+If it is missing, add it manually. The path may vary depending on the HACS installation; use the URL shown in the installed HACS resource details. Do not add the same resource twice.
+
+### Adding cards to a dashboard
+
+1. Open the Home Assistant dashboard where you want to use the card.
+2. Open the dashboard menu and select **Edit dashboard**.
+3. Click **Add card**.
+4. Find **ESP32 OTA Manager** or **ESP32 Device Control** in the custom cards list.
+5. Select the card, optionally configure its title, and save.
+
+If a card is not listed in the visual editor, add it using YAML mode and the examples in the [Card configuration](#card-configuration) section.
 
 ## Card configuration
 
@@ -75,6 +104,8 @@ Add cards to a Lovelace dashboard using YAML mode or the card configuration edit
 type: custom:esp32-ota-card
 title: ESP32 firmware updates
 ```
+
+The `title` option is optional. If omitted, the card uses **“Обновление прошивки ESP32”** as its default title.
 
 ### Device Control
 
