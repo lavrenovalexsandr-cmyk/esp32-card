@@ -21,6 +21,7 @@ This repository contains two independent cards. They can be used separately or t
 Card type: `custom:esp32-ota-card`
 
 - Select an ESP32 device.
+- Display the device name from the Home Assistant device registry, including a user-assigned name.
 - Start a firmware OTA update from a URL.
 - Optionally provide a GitHub token to access private releases.
 - Monitor the current update status.
@@ -33,6 +34,7 @@ The card does not download firmware itself. It calls the Home Assistant integrat
 Card type: `custom:esp32-device-control-card`
 
 - Select an ESP32 device.
+- Display the device name from the Home Assistant device registry, including a user-assigned name.
 - Remotely restart the device.
 - Start a Factory Reset.
 - Require two confirmations before Factory Reset to prevent accidental resets.
