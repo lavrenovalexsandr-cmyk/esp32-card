@@ -83,7 +83,7 @@ class Esp32OtaCard extends HTMLElement {
           .ota-detail { color:var(--secondary-text-color); font-size:13px; margin-top:3px; }
           .ota-progress { height:8px; background:var(--divider-color); border-radius:8px; overflow:hidden; margin-top:10px; }
           .ota-progress > div { height:100%; background:var(--primary-color); transition:width .25s ease; }
-          .ota-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+          .ota-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:18px; }\n          .ota-actions button { min-height:48px; border:0; border-radius:9px; padding:10px; font:inherit; font-weight:600; cursor:pointer; }\n          .ota-actions .ota-update { background:var(--error-color); color:white; }\n          .ota-actions .ota-save { background:var(--primary-color); color:var(--text-primary-color, white); }\n          .ota-actions button:disabled { opacity:.45; cursor:not-allowed; }\n          @media(max-width:380px) { .ota-actions { grid-template-columns:1fr; } }
           .ota-message { font-size:13px; overflow-wrap:anywhere; color:var(--secondary-text-color); margin-top:9px; }
           .ota-device-id { font-size:12px; color:var(--secondary-text-color); }
         </style>
