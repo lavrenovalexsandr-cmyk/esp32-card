@@ -24,6 +24,7 @@ Card type: `custom:esp32-ota-card`
 - Start a firmware OTA update from a URL.
 - Optionally provide a GitHub token to access private releases.
 - Monitor the current update status.
+- Show MQTT device availability (`Online` / `Offline`) independently from the OTA result.
 
 The card does not download firmware itself. It calls the Home Assistant integration, which sends the update command to the device over MQTT.
 
