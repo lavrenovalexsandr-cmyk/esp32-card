@@ -32,13 +32,13 @@ Planned features:
 - enter a bind-key;
 - Add sensor and Remove sensor buttons.
 
-The card calls services from [esp32-ha-integration-xiaomi-lywsd03](https://github.com/lavrenovalexsandr-cmyk/esp32-ha-integration-xiaomi-lywsd03). It does not construct MQTT topics or store bind-keys. Its visual style will match the existing cards.
+The card calls services from [esp32-integration-xiaomi-lywsd03](https://github.com/lavrenovalexsandr-cmyk/esp32-integration-xiaomi-lywsd03). It does not construct MQTT topics or store bind-keys. Its visual style will match the existing cards.
 
 ## Requirements
 
 Existing cards require the universal esp32_ota integration and firmware implementing its MQTT contract.
 
-The future Xiaomi card requires the dedicated [esp32-ha-integration-xiaomi-lywsd03](https://github.com/lavrenovalexsandr-cmyk/esp32-ha-integration-xiaomi-lywsd03) integration and [Xiaomi firmware](https://github.com/lavrenovalexsandr-cmyk/esp32-xiaomi-lywsd03-firmware).
+The future Xiaomi card requires the dedicated [esp32-integration-xiaomi-lywsd03](https://github.com/lavrenovalexsandr-cmyk/esp32-integration-xiaomi-lywsd03) integration and [Xiaomi firmware](https://github.com/lavrenovalexsandr-cmyk/esp32-firmware-xiaomi-lywsd03).
 
 ## Installation
 
@@ -80,7 +80,7 @@ Xiaomi Sensor Manager configuration will be documented after the card and integr
 
 Existing cards call esp32_ota.update, esp32_ota.restart and esp32_ota.factory_reset.
 
-The future Xiaomi card calls esp32_xiaomi_lywsd03.add_sensor and esp32_xiaomi_lywsd03.remove_sensor. Calls target the selected gateway. The bind-key is sent only during add and is not stored or displayed after submission.
+The future Xiaomi card calls esp32-component-xiaomi-lywsd03.add_sensor and esp32-component-xiaomi-lywsd03.remove_sensor. Calls target the selected gateway. The bind-key is sent only during add and is not stored or displayed after submission.
 
 ## Repository structure
 
@@ -92,9 +92,9 @@ When the Xiaomi card is implemented, update its source, the combined distributab
 
 ## Related projects
 
-- [Universal ESP32 integration](https://github.com/lavrenovalexsandr-cmyk/esp32-mqtt-ha-integration)
-- [Xiaomi Home Assistant integration](https://github.com/lavrenovalexsandr-cmyk/esp32-ha-integration-xiaomi-lywsd03)
-- [Xiaomi firmware](https://github.com/lavrenovalexsandr-cmyk/esp32-xiaomi-lywsd03-firmware)
+- [Universal ESP32 integration](https://github.com/lavrenovalexsandr-cmyk/esp32-integration-core)
+- [Xiaomi Home Assistant integration](https://github.com/lavrenovalexsandr-cmyk/esp32-integration-xiaomi-lywsd03)
+- [Xiaomi firmware](https://github.com/lavrenovalexsandr-cmyk/esp32-firmware-xiaomi-lywsd03)
 - [ESP32 Platform Core](https://github.com/lavrenovalexsandr-cmyk/esp32-platform-core)
 
 The primary documentation is README.md in Russian. The English version is README_EN.md.
