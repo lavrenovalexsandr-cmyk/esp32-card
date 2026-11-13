@@ -80,7 +80,7 @@ Xiaomi Sensor Manager configuration will be documented after the card and integr
 
 Existing cards call esp32_ota.update, esp32_ota.restart and esp32_ota.factory_reset.
 
-The future Xiaomi card calls esp32-component-xiaomi-lywsd03.add_sensor and esp32-component-xiaomi-lywsd03.remove_sensor. Calls target the selected gateway. The bind-key is sent only during add and is not stored or displayed after submission.
+The future Xiaomi card calls esp32_xiaomi_lywsd03.add_sensor and esp32_xiaomi_lywsd03.remove_sensor. Calls target the selected gateway. The bind-key is sent only during add and is not stored or displayed after submission.
 
 ## Repository structure
 
