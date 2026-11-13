@@ -80,7 +80,7 @@ Device Control:
 
 Существующие карточки вызывают esp32_ota.update, esp32_ota.restart и esp32_ota.factory_reset.
 
-Будущая Xiaomi-карточка вызывает esp32-component-xiaomi-lywsd03.add_sensor и esp32-component-xiaomi-lywsd03.remove_sensor. Вызовы адресуются выбранному шлюзу. Bind-key передаётся только при добавлении и не сохраняется/не отображается после отправки.
+Будущая Xiaomi-карточка вызывает esp32_xiaomi_lywsd03.add_sensor и esp32_xiaomi_lywsd03.remove_sensor. Вызовы адресуются выбранному шлюзу. Bind-key передаётся только при добавлении и не сохраняется/не отображается после отправки.
 
 ## Структура репозитория
 
